@@ -19,8 +19,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
 
 # --- TELEGRAM CONFIGURATION ---
-# TOKEN: 8350436316:AAEihQ0h5LssxCtiVjX9vVuBur-PPgvgLXs
-# CHAT ID: 6059110157
+# TOKEN: 00000:hdhkaksnn
+# CHAT ID: 1234567890
 # CATATAN: ID CHAT PERSONAL (USER) biasanya tidak perlu tanda minus.
 #          Jika ini adalah ID Grup/Channel, kemungkinan besar harus negatif (e.g., '-12345').
 TELEGRAM_TOKEN = 'your-token-telegram' 
