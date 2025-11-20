@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tabs">
+    <div id="request-tab" class="tab-content active">
+        <div class="tab-header">
+            <h2><i class="fas fa-globe"></i> HTTP Client</h2>
+            <p>Test and debug HTTP requests with advanced features</p>
+        </div>
+        
+        <div class="request-form">
+            <div class="form-row">
+                <div class="form-group" style="grid-column: 1 / 2;">
+                    <label for="method"><i class="fas fa-code-branch"></i> HTTP Method:</label>
+                    <select id="method" name="method">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="grid-column: 2 / 3;">
+                    <label for="url"><i class="fas fa-link"></i> Request URL:</label>
+                    <input type="text" id="url" name="url" placeholder="https://api.example.com/endpoint" value="https://httpbin.org/get">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="headers"><i class="fas fa-heading"></i> Custom Headers (JSON format):</label>
+                <textarea id="headers" name="headers" rows="4" placeholder='{"Content-Type": "application/json", "Authorization": "Bearer token"}'></textarea>
+            </div>
+
+            <div class="form-group" id="data-group">
+                <label for="data"><i class="fas fa-database"></i> Request Body:</label>
+                <textarea id="data" name="data" rows="4" placeholder='{"key": "value", "data": "example"}'></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button id="send-request" class="btn-primary">
+                    <i class="fas fa-paper-plane"></i> Send Request
+                </button>
+                <button id="save-request" class="btn-secondary">
+                    <i class="fas fa-save"></i> Save Request
+                </button>
+                <button id="load-saved" class="btn-secondary">
+                    <i class="fas fa-folder-open"></i> Load Saved
+                </button>
+            </div>
+        </div>
+
+        <div class="response-section">
+            <h3><i class="fas fa-download"></i> Response</h3>
+            <div class="response-info">
+                <div class="status-code">
+                    <strong>Status:</strong> 
+                    <span id="status" class="status-default">Waiting for request...</span>
+                </div>
+                <div class="response-url">
+                    <strong>URL:</strong> 
+                    <span id="response-url">-</span>
+                </div>
+                <div class="response-size">
+                    <strong>Size:</strong> 
+                    <span id="response-size">-</span>
+                </div>
+                <div class="response-time">
+                    <strong>Time:</strong> 
+                    <span id="response-time">-</span>
+                </div>
+            </div>
+            <div class="response-headers">
+                <h4><i class="fas fa-heading"></i> Response Headers:</h4>
+                <pre id="response-headers">No headers received</pre>
+            </div>
+            <div class="response-body">
+                <h4><i class="fas fa-file-code"></i> Response Body:</h4>
+                <pre id="response-content">No content received</pre>
+            </div>
+        </div>
+    </div>
+
+    <div id="encode-tab" class="tab-content">
+        <div class="tab-header">
+            <h2><i class="fas fa-code"></i> Encoder & Decoder</h2>
+            <p>Transform and hash your text data with multiple algorithms</p>
+        </div>
+        
+        <div class="encode-form">
+            <div class="form-group">
+                <label for="encode-text"><i class="fas fa-pencil-alt"></i> Input Text:</label>
+                <textarea id="encode-text" name="encode-text" rows="4" placeholder="Enter text to encode, decode, or hash..."></textarea>
+            </div>
+
+            <div class="button-grid">
+                <div class="button-group">
+                    <h4><i class="fas fa-link"></i> URL Encoding</h4>
+                    <button data-action="url_encode" class="btn-secondary">
+                        <i class="fas fa-lock"></i> URL Encode
+                    </button>
+                    <button data-action="url_decode" class="btn-secondary">
+                        <i class="fas fa-unlock"></i> URL Decode
+                    </button>
+                </div>
+
+                <div class="button-group">
+                    <h4><i class="fas fa-database"></i> Base64</h4>
+                    <button data-action="base64_encode" class="btn-secondary">
+                        <i class="fas fa-shield-alt"></i> Base64 Encode
+                    </button>
+                    <button data-action="base64_decode" class="btn-secondary">
+                        <i class="fas fa-shield-virus"></i> Base64 Decode
+                    </button>
+                </div>
+
+                <div class="button-group">
+                    <h4><i class="fas fa-hashtag"></i> Hashing</h4>
+                    <button data-action="md5_hash" class="btn-secondary">
+                        <i class="fas fa-fingerprint"></i> MD5 Hash
+                    </button>
+                    <button data-action="sha1_hash" class="btn-secondary">
+                        <i class="fas fa-fingerprint"></i> SHA1 Hash
+                    </button>
+                    <button data-action="sha256_hash" class="btn-secondary">
+                        <i class="fas fa-fingerprint"></i> SHA256 Hash
+                    </button>
+                    <button data-action="sha512_hash" class="btn-secondary">
+                        <i class="fas fa-fingerprint"></i> SHA512 Hash
+                    </button>
+                </div>
+
+                <div class="button-group">
+                    <h4><i class="fas fa-code"></i> HTML Entities</h4>
+                    <button data-action="html_encode" class="btn-secondary">
+                        <i class="fas fa-code"></i> HTML Encode
+                    </button>
+                    <button data-action="html_decode" class="btn-secondary">
+                        <i class="fas fa-file-code"></i> HTML Decode
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="encode-result"><i class="fas fa-clipboard-check"></i> Result:</label>
+                <textarea id="encode-result" name="encode-result" rows="4" readonly placeholder="Your transformed text will appear here..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div id="generator-tab" class="tab-content">
+        <div class="tab-header">
+            <h2><i class="fas fa-magic"></i> Data Generator</h2>
+            <p>Generate various types of test data and QR codes</p>
+        </div>
+        
+        <div class="generator-section">
+            <div class="generator-form">
+                <h3><i class="fas fa-cogs"></i> Data Generation</h3>
+                <div class="form-group">
+                    <label for="generator-type"><i class="fas fa-cogs"></i> Data Type:</label>
+                    <select id="generator-type" name="generator-type">
+                        <option value="password">Secure Password</option>
+                        <option value="api_key">API Key</option>
+                        <option value="jwt_token">JWT Token</option>
+                        <option value="random_number">Random Number</option>
+                        <option value="lorem_ipsum">Lorem Ipsum</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="length-group">
+                    <label for="generator-length"><i class="fas fa-ruler"></i> Length:</label>
+                    <input type="number" id="generator-length" name="generator-length" value="12" min="1" max="500">
+                </div>
+
+                <button id="generate-data" class="btn-primary">
+                    <i class="fas fa-bolt"></i> Generate Data
+                </button>
+
+                <div class="form-group">
+                    <label for="generator-result"><i class="fas fa-clipboard-check"></i> Generated Data:</label>
+                    <textarea id="generator-result" name="generator-result" rows="3" readonly placeholder="Generated data will appear here..."></textarea>
+                </div>
+            </div>
+
+            <div class="qr-generator">
+                <h3><i class="fas fa-qrcode"></i> QR Code Generator</h3>
+                <div class="form-group">
+                    <label for="qr-data"><i class="fas fa-pencil-alt"></i> QR Code Data:</label>
+                    <textarea id="qr-data" name="qr-data" rows="3" placeholder="Enter text or URL to generate QR code..."></textarea>
+                </div>
+                <button id="generate-qr" class="btn-primary">
+                    <i class="fas fa-qrcode"></i> Generate QR Code
+                </button>
+                <div id="qr-result" class="qr-result">
+                    <img id="qr-image" src="" alt="QR Code" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="analyzer-tab" class="tab-content">
+        <div class="tab-header">
+            <h2><i class="fas fa-search"></i> JSON Analyzer</h2>
+            <p>Analyze and validate JSON structures with detailed insights</p>
+        </div>
+        
+        <div class="analyzer-section">
+            <div class="form-group">
+                <label for="json-input"><i class="fas fa-file-code"></i> JSON Input:</label>
+                <textarea id="json-input" name="json-input" rows="10" placeholder='Paste your JSON here...'>{
+  "name": "John Doe",
+  "age": 30,
+  "email": "john@example.com",
+  "hobbies": ["reading", "gaming", "coding"],
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "country": "USA"
+  }
+}</textarea>
+            </div>
+
+            <button id="analyze-json" class="btn-primary">
+                <i class="fas fa-search"></i> Analyze JSON
+            </button>
+
+            <div id="json-analysis" class="analysis-results hidden">
+                <div class="analysis-summary">
+                    <h4><i class="fas fa-chart-bar"></i> Analysis Summary</h4>
+                    <div id="analysis-stats"></div>
+                </div>
+                <div class="analysis-details">
+                    <h4><i class="fas fa-list"></i> Structure Details</h4>
+                    <div id="analysis-details"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="history-tab" class="tab-content">
+        <div class="tab-header">
+            <h2><i class="fas fa-history"></i> Request History</h2>
+            <p>View your recent API requests and saved configurations</p>
+        </div>
+        
+        <div class="history-section">
+            <div class="history-tabs">
+                <button class="history-tab active" data-tab="recent">Recent Requests</button>
+                <button class="history-tab" data-tab="saved">Saved Requests</button>
+            </div>
+
+            <div id="recent-requests" class="history-content active">
+                <h3><i class="fas fa-clock"></i> Recent Requests</h3>
+                <div class="requests-list" id="recent-requests-list">
+                    <p>Loading recent requests...</p>
+                </div>
+            </div>
+
+            <div id="saved-requests" class="history-content">
+                <h3><i class="fas fa-save"></i> Saved Requests</h3>
+                <div class="requests-list" id="saved-requests-list">
+                    <p>Loading saved requests...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-tab" class="tab-content">
+        <div class="tab-header">
+            <h2><i class="fas fa-info-circle"></i> About Shiny Portal</h2>
+            <p>Your ultimate gateway to powerful web development tools</p>
+        </div>
+        
+        <div class="about-content">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>HTTP Client</h3>
+                    <p>Advanced API testing with history tracking and request saving</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Encoder/Decoder</h3>
+                    <p>Multiple encoding formats and hashing algorithms</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-magic"></i>
+                    <h3>Data Generator</h3>
+                    <p>Generate passwords, API keys, JWT tokens, and QR codes</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h3>JSON Analyzer</h3>
+                    <p>Deep JSON structure analysis and validation</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-history"></i>
+                    <h3>Request History</h3>
+                    <p>Track and manage your API testing history</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Security Tools</h3>
+                    <p>Hashing, encoding, and token generation utilities</p>
+                </div>
+            </div>
+
+            <div class="usage-notice">
+                <h3><i class="fas fa-exclamation-triangle"></i> Responsible Usage</h3>
+                <p>Shiny Portal is designed for **development, testing, and educational purposes**. Always ensure you have proper authorization before testing any systems or APIs.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+    <p>Processing your request...</p>
+</div>
+
+<div id="notification" class="notification hidden"></div>
+
+<div id="save-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3><i class="fas fa-save"></i> Save Request</h3>
+        <div class="form-group">
+            <label for="request-name">Request Name:</label>
+            <input type="text" id="request-name" placeholder="Enter a name for this request">
+        </div>
+        <div class="modal-actions">
+            <button id="confirm-save" class="btn-primary"><i class="fas fa-save"></i> Save</button>
+            <button id="cancel-save" class="btn-secondary"><i class="fas fa-times"></i> Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="load-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3><i class="fas fa-folder-open"></i> Load Saved Request</h3>
+        <div id="saved-requests-modal" class="saved-requests-list">
+            <p>Loading saved requests...</p>
+        </div>
+        <div class="modal-actions">
+            <button id="cancel-load" class="btn-secondary"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

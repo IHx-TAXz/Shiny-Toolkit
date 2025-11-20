@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shiny Portal - Ultimate Web Developer Toolkit{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>✨ Shiny Portal</h1>
+                    <span>Ultimate Web Developer Toolkit</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#request-tab" class="nav-link active"><i class="fas fa-globe"></i> HTTP Client</a></li>
+                        <li><a href="#encode-tab" class="nav-link"><i class="fas fa-code"></i> Encoder/Decoder</a></li>
+                        <li><a href="#generator-tab" class="nav-link"><i class="fas fa-magic"></i> Generator</a></li>
+                        <li><a href="#analyzer-tab" class="nav-link"><i class="fas fa-search"></i> JSON Analyzer</a></li>
+                        <li><a href="#history-tab" class="nav-link"><i class="fas fa-history"></i> History</a></li>
+                        <li><a href="#about-tab" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Shiny Portal - Ultimate Tools for Web Developers</p>
+            <div class="footer-links">
+                <a href="https://github.com/yourusername/shiny-portal" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="{{ url_for('documentation') }}"><i class="fas fa-book"></i> Documentation</a>
+                <a href="{{ url_for('report_issue') }}"><i class="fas fa-bug"></i> Report Issue</a>
+            </div>
+        </div>
+    </footer>
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% endblock %}
+</body>
+</html>
